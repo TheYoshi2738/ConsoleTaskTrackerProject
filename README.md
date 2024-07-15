@@ -1,1 +1,2 @@
-# LittleConsoleProject
+# ConsoleTaskTracker
+Таск-трекер в консоли выполненный в виде чат-бота (по карйней мере пока)
