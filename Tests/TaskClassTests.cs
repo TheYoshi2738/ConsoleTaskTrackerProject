@@ -1,3 +1,4 @@
+using ConsoleTaskTracker;
 using Task = ConsoleTaskTracker.Task;
 
 namespace ConsoleTaskTrackerTests
@@ -8,7 +9,7 @@ namespace ConsoleTaskTrackerTests
         public void TaskEmptyNameCreation()
         {
             var task = new Task();
-            var expected = "Задача без названия";
+            var expected = $"Задача без названия. Создана {DateTime.Now.ToString("d")} в {DateTime.Now.ToString("t")}";
             var actual = task.Name;
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -30,12 +31,12 @@ namespace ConsoleTaskTrackerTests
             Assert.That(actual, Does.Contain(expected));
         }
 
-        [TestCase(Task.Status.Backlog, Task.Status.InProgress, Task.Status.InProgress)]
-        [TestCase(Task.Status.InProgress, Task.Status.Backlog, Task.Status.Backlog)]
-        [TestCase(Task.Status.InProgress, Task.Status.Done, Task.Status.Done)]
-        [TestCase(Task.Status.Backlog, Task.Status.Trashed, Task.Status.Trashed)]
-        [TestCase(Task.Status.InProgress, Task.Status.Trashed, Task.Status.Trashed)]
-        public void TaskSuccessStatusChange(Task.Status currentStatus, Task.Status statusToChange, Task.Status expected)
+        [TestCase(Status.Backlog, Status.InProgress, Status.InProgress)]
+        [TestCase(Status.InProgress, Status.Backlog, Status.Backlog)]
+        [TestCase(Status.InProgress, Status.Done, Status.Done)]
+        [TestCase(Status.Backlog, Status.Trashed, Status.Trashed)]
+        [TestCase(Status.InProgress, Status.Trashed, Status.Trashed)]
+        public void TaskSuccessStatusChange(Status currentStatus, Status statusToChange, Status expected)
         {
             var task = new Task();
 
@@ -46,20 +47,20 @@ namespace ConsoleTaskTrackerTests
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [TestCase(Task.Status.Backlog, Task.Status.Done, "Задачу нельзя перевести в Done из Backlog")]
-        [TestCase(Task.Status.Done, Task.Status.Backlog, "Невозможно изменить статус у неактивной задачи")]
-        [TestCase(Task.Status.Done, Task.Status.InProgress, "Невозможно изменить статус у неактивной задачи")]
-        [TestCase(Task.Status.Done, Task.Status.Trashed, "Невозможно изменить статус у неактивной задачи")]
-        [TestCase(Task.Status.Trashed, Task.Status.Backlog, "Невозможно изменить статус у неактивной задачи")]
-        [TestCase(Task.Status.Trashed, Task.Status.InProgress, "Невозможно изменить статус у неактивной задачи")]
-        [TestCase(Task.Status.Trashed, Task.Status.Done, "Невозможно изменить статус у неактивной задачи")]
-        public void TaskFailedStatusChange(Task.Status currentStatus, Task.Status statusToChange, string expected)
+        [TestCase(Status.Backlog, Status.Done, "Задачу нельзя перевести в Done из Backlog")]
+        [TestCase(Status.Done, Status.Backlog, "Невозможно изменить статус у неактивной задачи")]
+        [TestCase(Status.Done, Status.InProgress, "Невозможно изменить статус у неактивной задачи")]
+        [TestCase(Status.Done, Status.Trashed, "Невозможно изменить статус у неактивной задачи")]
+        [TestCase(Status.Trashed, Status.Backlog, "Невозможно изменить статус у неактивной задачи")]
+        [TestCase(Status.Trashed, Status.InProgress, "Невозможно изменить статус у неактивной задачи")]
+        [TestCase(Status.Trashed, Status.Done, "Невозможно изменить статус у неактивной задачи")]
+        public void TaskFailedStatusChange(Status currentStatus, Status statusToChange, string expected)
         {
             var task = new Task();
             string actual = string.Empty;
 
-            if (currentStatus.Equals(Task.Status.Done))
-                task.ChangeStatus(Task.Status.InProgress);
+            if (currentStatus.Equals(Status.Done))
+                task.ChangeStatus(Status.InProgress);
 
             task.ChangeStatus(currentStatus);
 

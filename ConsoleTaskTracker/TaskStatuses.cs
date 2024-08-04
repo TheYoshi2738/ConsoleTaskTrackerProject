@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleTaskTracker
 {
-    public static class IdGenerator
+    public enum Status
     {
-        static int id = 0;
-
-        public static int GetNewId()
-        {
-            return ++id;
-        }
+        Backlog,
+        InProgress,
+        Done,
+        Trashed
     }
 }

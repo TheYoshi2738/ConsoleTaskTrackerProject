@@ -10,72 +10,63 @@ namespace ConsoleTaskTracker
 {
     public class Task
     {
-        public enum Status
-        {
-            Backlog,
-            InProgress,
-            Done,
-            Trashed
-        }
-        public readonly int Id;
-        public string Name { get; private set; }
-        public readonly DateTime CreatedAt;
+        public Guid Id { get; } 
+        public string Name { get; }
+        public DateTime CreatedAt { get; }
         private DateTime _dueDate;
         public DateTime DueDate
         {
-            get { return _dueDate; }
+            get { return _dueDate.Date; }
             private set
             {
-                if (value < DateTime.Now)
+                if (value < DateTime.Now) //получается для решения проблемы надо инкапуслировать DateTime в отдельную сущность?
+                {
                     throw new ArgumentException("Дата DueDate не может быть в прошлом");
+                } 
             }
         }
-        public bool IsActive { get; set; }
-        private Status _taskStatus;
-        public Status TaskStatus
+        public bool IsActive
         {
-            get { return _taskStatus; }
-            private set
+            get
             {
-                if (value == Status.Trashed ||
-                    value == Status.Done)
-                    IsActive = false;
-                _taskStatus = value;
+                if (TaskStatus == Status.Trashed ||
+                    TaskStatus == Status.Done)
+                {
+                    return false;
+                }
+                return true;
             }
         }
-
-        public Task() : this("Задача без названия")
-        {
-
-        }
+        public Status TaskStatus { get; private set; }
+        public Task() : this($"Задача без названия. Создана {DateTime.Now.ToString("d")} в {DateTime.Now.ToString("t")}") { }
         public Task(string taskName)
         {
-            Id = IdGenerator.GetNewId();
+            Id = Guid.NewGuid();
             Name = taskName;
             CreatedAt = DateTime.Now;
-            IsActive = true;
             TaskStatus = Status.Backlog;
         }
-
         public Task(string taskName, DateTime dueDate) : this(taskName)
         {
             DueDate = dueDate;
         }
-
         public void ChangeStatus(Status status)
         {
             if (!IsActive)
+            {
                 throw new ArgumentException("Невозможно изменить статус у неактивной задачи");
+            }
 
             if (TaskStatus == Status.Backlog && status == Status.Done)
+            {
                 throw new ArgumentException("Задачу нельзя перевести в Done из Backlog");
+            }
 
             TaskStatus = status;
         }
-
         public void ChangeDueDate(DateTime dueDate)
         {
-
+            DueDate = dueDate;
         }
     }
 }

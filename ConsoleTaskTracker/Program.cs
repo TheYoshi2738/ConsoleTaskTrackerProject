@@ -6,11 +6,10 @@ public class Program
 {
     public static void Main()
     {
-        ProgramLogic();
+        StartChat();
     }
 
-
-    public static void ProgramLogic()
+    public static void StartChat()
     {
         var allTasks = new List<Task>();
 
@@ -25,7 +24,14 @@ public class Program
                 continue;
             }
 
-            allTasks.Add(new Task(taskName));
+            if (taskName.Equals(""))
+            {
+                allTasks.Add(new Task());
+            }
+            else
+            {
+                allTasks.Add(new Task(taskName));
+            }
 
             Console.WriteLine("Надо добавить еще?");
             var answer = Console.ReadLine();
@@ -41,7 +47,7 @@ public class Program
         foreach (var task in allTasks)
         {
             Console.WriteLine("Задача: {0} создана {1}. Статус: {2}", task.Name, task.CreatedAt.ToString(), task.TaskStatus.ToString());
-            File.Delete("./TasksDB.json");
         }
+        File.Delete("./TasksDB.json");
     }
 }

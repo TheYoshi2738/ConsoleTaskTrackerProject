@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pss2xKxFFj0=",
+  "dgSpecHash": "CfsmeEFoAZs=",
   "success": true,
-  "projectFilePath": "C:\\Users\\nikit\\source\\repos\\LittleConsoleProject\\Tests\\ConsoleTaskTrackerTests.csproj",
+  "projectFilePath": "C:\\Users\\nikit\\source\\repos\\TheYoshi2738\\ConsoleTaskTrackerProject\\Tests\\ConsoleTaskTrackerTests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nikit\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\nikit\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
