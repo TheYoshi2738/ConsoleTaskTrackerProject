@@ -6,13 +6,12 @@ public class Program
 {
     public static void Main()
     {
-        StartChat();
+        var repo = new Repository("C:\\Users\\nikit\\source\\repos\\TheYoshi2738\\ConsoleTaskTrackerProject\\repo.json");
+        StartChat(repo);
     }
 
-    public static void StartChat()
+    public static void StartChat(ITaskRepository repo)
     {
-        var allTasks = new List<Task>();
-
         while (true)
         {
             Console.Write("Введи название задачи для добавления: ");
@@ -26,11 +25,12 @@ public class Program
 
             if (taskName.Equals(""))
             {
-                allTasks.Add(new Task());
+                repo.Save(new Task());
             }
             else
             {
-                allTasks.Add(new Task(taskName));
+                var task = new Task(taskName);
+                repo.Save(task);
             }
 
             Console.WriteLine("Надо добавить еще?");
@@ -41,13 +41,15 @@ public class Program
             else break;
         }
 
-        var allTasksJson = JsonSerializer.Serialize(allTasks);
-        File.AppendAllText("./TasksDB.json", allTasksJson);
+        var allTasks = repo.GetAll();
 
         foreach (var task in allTasks)
         {
-            Console.WriteLine("Задача: {0} создана {1}. Статус: {2}", task.Name, task.CreatedAt.ToString(), task.TaskStatus.ToString());
+            Console.WriteLine($"Название: {task.Name}");
+            Console.WriteLine($"Id: {task.Id}");
+            Console.WriteLine($"Дата создания: {task.CreatedAt}");
+            Console.WriteLine($"Дата дедлайна: {task.DueDate}");
+            Console.WriteLine($"Активная задача?: {(task.IsActive ? "Да" : "Нет")}");
         }
-        File.Delete("./TasksDB.json");
     }
 }

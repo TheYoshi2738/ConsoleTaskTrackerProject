@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Contracts;
@@ -10,19 +12,27 @@ namespace ConsoleTaskTracker
 {
     public class Task
     {
-        public Guid Id { get; } 
-        public string Name { get; }
-        public DateTime CreatedAt { get; }
-        private DateTime _dueDate;
-        public DateTime DueDate
+        [JsonProperty]
+        public string Id { get; private set; }
+        [JsonProperty]
+        public string Name { get; private set; }
+        [JsonProperty]
+        public DateTime CreatedAt { get; private set; }
+        private DateTime? _dueDate;
+        [JsonProperty]
+        public DateTime? DueDate
         {
-            get { return _dueDate.Date; }
+            get
+            {
+                if (_dueDate.Equals(DateTime.MinValue))
+                {
+                    return null;
+                }
+                return _dueDate;
+            }
             private set
             {
-                if (value < DateTime.Now) //получается для решения проблемы надо инкапуслировать DateTime в отдельную сущность?
-                {
-                    throw new ArgumentException("Дата DueDate не может быть в прошлом");
-                } 
+                _dueDate = value;
             }
         }
         public bool IsActive
@@ -36,18 +46,26 @@ namespace ConsoleTaskTracker
                 }
                 return true;
             }
+            set
+            {
+
+            }
         }
         public Status TaskStatus { get; private set; }
         public Task() : this($"Задача без названия. Создана {DateTime.Now.ToString("d")} в {DateTime.Now.ToString("t")}") { }
         public Task(string taskName)
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString();
             Name = taskName;
             CreatedAt = DateTime.Now;
             TaskStatus = Status.Backlog;
         }
         public Task(string taskName, DateTime dueDate) : this(taskName)
         {
+            if (dueDate < DateTime.Now)
+            {
+                throw new ArgumentException("Дата дедлайна не может быть в прошло");
+            }
             DueDate = dueDate;
         }
         public void ChangeStatus(Status status)
@@ -61,12 +79,11 @@ namespace ConsoleTaskTracker
             {
                 throw new ArgumentException("Задачу нельзя перевести в Done из Backlog");
             }
-
-            TaskStatus = status;
         }
         public void ChangeDueDate(DateTime dueDate)
         {
             DueDate = dueDate;
         }
+
     }
 }

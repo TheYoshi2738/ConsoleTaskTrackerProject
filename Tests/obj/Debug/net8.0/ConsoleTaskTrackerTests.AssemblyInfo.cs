@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ConsoleTaskTrackerTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3986d830870b6e517556cfca55da3d5c98d1d083")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c8effbba02170ce6befcfb70365aabc03035a1ae")]
 [assembly: System.Reflection.AssemblyProductAttribute("ConsoleTaskTrackerTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ConsoleTaskTrackerTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
