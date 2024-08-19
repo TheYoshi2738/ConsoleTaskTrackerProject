@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    "\\ConsoleTaskTracker",
-    "\\Tests"
+    "",
+    "\\Application",
+    "\\Core"
   ],
+  "SelectedNode": "\\Core\\Core.csproj",
   "PreviewInSolutionExplorer": false
 }
