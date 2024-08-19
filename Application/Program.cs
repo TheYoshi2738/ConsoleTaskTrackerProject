@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ConsoleTaskTracker;
 
@@ -6,7 +8,12 @@ public class Program
 {
     public static void Main()
     {
-        var repo = new Repository("C:\\Users\\nikit\\source\\repos\\TheYoshi2738\\ConsoleTaskTrackerProject\\repo.json");
+        //попытка держать все такси в одном месте и искать путь до ДБ динамично
+        var path = Assembly.GetExecutingAssembly().Location;
+        var regex = new Regex(".*ConsoleTaskTrackerProject\\b");
+        path = Convert.ToString(regex.Match(path));
+        var repo = new Repository(path + "\\TaskRepository\\repo.json");
+
         StartChat(repo);
     }
 
@@ -50,6 +57,8 @@ public class Program
             Console.WriteLine($"Дата создания: {task.CreatedAt}");
             Console.WriteLine($"Дата дедлайна: {task.DueDate}");
             Console.WriteLine($"Активная задача?: {(task.IsActive ? "Да" : "Нет")}");
+            Console.WriteLine($"Статус: {task.TaskStatus}");
+            Console.WriteLine();
         }
     }
 }
