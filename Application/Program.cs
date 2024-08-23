@@ -1,20 +1,35 @@
 ﻿using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Core;
+using Task = Core.Task;
+using Data;
 
-namespace ConsoleTaskTracker;
+namespace Application;
 
 public class Program
 {
     public static void Main()
     {
-        //попытка держать все такси в одном месте и искать путь до ДБ динамично
-        var path = Assembly.GetExecutingAssembly().Location;
-        var regex = new Regex(".*ConsoleTaskTrackerProject\\b");
-        path = Convert.ToString(regex.Match(path));
-        var repo = new Repository(path + "\\TaskRepository\\repo.json");
+        Console.CursorVisible = false;
+        Console.WriteLine("Консольный таск-трекер");
+        var menu = new MainMenuScreen("Главное меню",
+        [
+            "Показать все задачи",
+            "Создать задачу",
+            "Выйти"
+        ]);
+        menu.Print();
 
-        StartChat(repo);
+        menu.NextScreen(MenuManager.ChooseItem(menu.MenuItems));
+
+        //попытка держать все такси в одном месте и искать путь до ДБ динамично
+        //var path = Assembly.GetExecutingAssembly().Location;
+        //var regex = new Regex(".*ConsoleTaskTrackerProject\\b");
+        //path = Convert.ToString(regex.Match(path));
+        //var repo = new Repository(path + "\\TaskRepository\\repo.json");
+
+        //StartChat(repo);
     }
 
     public static void StartChat(ITaskRepository repo)

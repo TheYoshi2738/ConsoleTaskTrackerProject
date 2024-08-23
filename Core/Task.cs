@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ConsoleTaskTracker
+namespace Core
 {
     public class Task
     {

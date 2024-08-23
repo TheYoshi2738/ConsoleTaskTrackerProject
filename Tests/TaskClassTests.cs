@@ -1,7 +1,7 @@
-using ConsoleTaskTracker;
-using Task = ConsoleTaskTracker.Task;
+using Core;
+using Task = Core.Task;
 
-namespace ConsoleTaskTrackerTests
+namespace Tests
 {
     public class TaskClassTests
     {

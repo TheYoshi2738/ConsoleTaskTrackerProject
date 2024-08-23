@@ -1,7 +1,9 @@
 ﻿using System.Text;
+using Core;
+using Task = Core.Task;
 using Newtonsoft.Json;
 
-namespace ConsoleTaskTracker
+namespace Data
 {
     public class Repository : ITaskRepository
     {
@@ -10,7 +12,7 @@ namespace ConsoleTaskTracker
         {
             get
             {
-                return String.IsNullOrEmpty(File.ReadAllText(TaskRepoFile.FullName, Encoding.UTF8));
+                return string.IsNullOrEmpty(File.ReadAllText(TaskRepoFile.FullName, Encoding.UTF8));
             }
         }
         public Repository(string pathToRepo)
