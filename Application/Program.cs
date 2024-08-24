@@ -11,6 +11,7 @@ public class Program
 {
     public static void Main()
     {
+        //fake comment
         //Console.CursorVisible = false;
         //Console.WriteLine("Консольный таск-трекер");
         //var menu = new MainMenuScreen("Главное меню",
