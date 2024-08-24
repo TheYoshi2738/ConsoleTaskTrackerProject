@@ -4,7 +4,7 @@ namespace Core
 {
     public interface ITaskRepository
     {
-        public void Save(Task task);
-        public List<Task> GetAll();
+        public void CreateTask(Task task);
+        public IReadOnlyList<Task> GetAllTasks();
     }
 }

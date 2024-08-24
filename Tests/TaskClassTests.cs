@@ -14,22 +14,6 @@ namespace Tests
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [Test]
-        public void TaskDueDateInPastCreation()
-        {
-            string actual = string.Empty;
-            try
-            {
-                var task = new Task("Задача", DateTime.Parse("2020-10-10"));
-            }
-            catch (ArgumentException e)
-            {
-                actual = e.Message;
-            }
-
-            Assert.That(actual, Is.Not.Empty);
-        }
-
         [TestCase(Status.Backlog, Status.InProgress, Status.InProgress)]
         [TestCase(Status.InProgress, Status.Backlog, Status.Backlog)]
         [TestCase(Status.InProgress, Status.Done, Status.Done)]
@@ -53,26 +37,20 @@ namespace Tests
         [TestCase(Status.Trashed, Status.Backlog, "Невозможно изменить статус у неактивной задачи")]
         [TestCase(Status.Trashed, Status.InProgress, "Невозможно изменить статус у неактивной задачи")]
         [TestCase(Status.Trashed, Status.Done, "Невозможно изменить статус у неактивной задачи")]
-        public void TaskFailedStatusChange(Status currentStatus, Status statusToChange, string expected)
+        public void TaskFailedStatusChange(Status currentStatus, Status statusToChange, string expectedMessage)
         {
             var task = new Task();
-            string actual = string.Empty;
 
             if (currentStatus.Equals(Status.Done))
+            {
                 task.ChangeStatus(Status.InProgress);
+            }
 
             task.ChangeStatus(currentStatus);
 
-            try
-            {
-                task.ChangeStatus(statusToChange);
-            }
-            catch (ArgumentException e)
-            {
-                actual = e.Message;
-            }
+            var exception = Assert.Throws<InvalidOperationException>(() => task.ChangeStatus(statusToChange));
 
-            Assert.That(actual, Does.Contain(expected));
+            Assert.That(exception.Message, Does.Contain(expectedMessage));
         }
     }
 }

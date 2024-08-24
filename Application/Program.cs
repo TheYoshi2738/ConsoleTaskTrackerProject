@@ -11,28 +11,28 @@ public class Program
 {
     public static void Main()
     {
-        Console.CursorVisible = false;
-        Console.WriteLine("Консольный таск-трекер");
-        var menu = new MainMenuScreen("Главное меню",
-        [
-            "Показать все задачи",
-            "Создать задачу",
-            "Выйти"
-        ]);
-        menu.Print();
+        //Console.CursorVisible = false;
+        //Console.WriteLine("Консольный таск-трекер");
+        //var menu = new MainMenuScreen("Главное меню",
+        //[
+        //    "Показать все задачи",
+        //    "Создать задачу",
+        //    "Выйти"
+        //]);
+        //menu.Print();
 
-        menu.NextScreen(MenuManager.ChooseItem(menu.MenuItems));
+        //menu.NextScreen(MenuManager.ChooseItem(menu.MenuItems));
 
         //попытка держать все такси в одном месте и искать путь до ДБ динамично
-        //var path = Assembly.GetExecutingAssembly().Location;
-        //var regex = new Regex(".*ConsoleTaskTrackerProject\\b");
-        //path = Convert.ToString(regex.Match(path));
-        //var repo = new Repository(path + "\\TaskRepository\\repo.json");
+        var path = Assembly.GetExecutingAssembly().Location;
+        var regex = new Regex(".*ConsoleTaskTrackerProject\\b");
+        path = Convert.ToString(regex.Match(path));
+        var jsonRepository = new RepositoryJson(path + "\\TaskRepository\\jsonRepository.json");
 
-        //StartChat(repo);
+        StartChat(jsonRepository);
     }
 
-    public static void StartChat(ITaskRepository repo)
+    public static void StartChat(ITaskRepository tasksRepository)
     {
         while (true)
         {
@@ -47,12 +47,12 @@ public class Program
 
             if (taskName.Equals(""))
             {
-                repo.Save(new Task());
+                tasksRepository.CreateTask(new Task());
             }
             else
             {
                 var task = new Task(taskName);
-                repo.Save(task);
+                tasksRepository.CreateTask(task);
             }
 
             Console.WriteLine("Надо добавить еще?");
@@ -63,7 +63,7 @@ public class Program
             else break;
         }
 
-        var allTasks = repo.GetAll();
+        var allTasks = tasksRepository.GetAllTasks();
 
         foreach (var task in allTasks)
         {
