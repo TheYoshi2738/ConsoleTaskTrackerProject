@@ -46,5 +46,10 @@ namespace Core
         {
             DueDate = dueDate;
         }
+
+        public override string ToString()
+        {
+            return $"{Name}, Статус: {TaskStatus}, Дедлайн: {DueDate}";
+        }
     }
 }
