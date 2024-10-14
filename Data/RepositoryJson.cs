@@ -46,6 +46,11 @@ namespace Data
             var jsonTasks = JsonConvert.SerializeObject(allTasks);
             File.WriteAllText(TaskRepoFile.FullName, jsonTasks);
         }
+
+        public void UpdateTask(Task task)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class TaskJsonConverter : JsonConverter
@@ -64,7 +69,7 @@ namespace Data
             var createdAt = DateOnly.FromDateTime((DateTime)jObject["CreatedAt"]);
             DateOnly? dueDate = DateOnly.TryParse((string)jObject["DueDate"], out DateOnly result) ? result : null;
                 
-            var status = (Status)(int)jObject["TaskStatus"];
+            var status = (Core.TaskStatus)(int)jObject["Status"];
 
             var task = new Task(id, name, createdAt, dueDate, status);
 
