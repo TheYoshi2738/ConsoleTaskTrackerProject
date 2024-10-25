@@ -16,7 +16,7 @@ namespace Application_v2
         public AllTasksScreen(AppContext context)
         {
             AppContext = context;
-            Actions = CreateMenuActions(); 
+            Actions = CreateMenuActions();
         }
         private IReadOnlyList<MenuActions> CreateMenuActions()
         {

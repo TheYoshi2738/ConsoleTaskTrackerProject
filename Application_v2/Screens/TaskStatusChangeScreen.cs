@@ -33,7 +33,8 @@ namespace Application_v2
 
                 Title = $"Выбери статус для задачи \"{task.Name}\"";
 
-            } else
+            }
+            else
             {
                 Title = $"Невозможно сменить статус у задачи \"{task.Name}\"";
             }

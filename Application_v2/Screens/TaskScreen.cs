@@ -30,7 +30,7 @@ namespace Application_v2
                 return new TaskStatusChangeScreen(AppContext, task);
             }));
             actions.Add(new MenuActions("Изменить дедлайн", () => throw new NotImplementedException()));
-            actions.Add(new MenuActions("Вернуться ко всем задачам", () => AppContext.PopAndUpdatePreviousScreen() ));
+            actions.Add(new MenuActions("Вернуться ко всем задачам", () => AppContext.PopAndUpdatePreviousScreen()));
 
             Actions = actions;
         }

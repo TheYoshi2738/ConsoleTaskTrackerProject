@@ -14,7 +14,7 @@ namespace Application_v2
         public List<string>? ScreenBodyLines { get; }
         public IReadOnlyList<MenuActions> Actions { get; }
         public AppContext AppContext { get; }
-        private List<(string, string?)>  actionTitlesWithInputs { get; set; }
+        private List<(string, string?)> actionTitlesWithInputs { get; set; }
 
         public CreationTaskScreen(AppContext context)
         {
@@ -51,7 +51,7 @@ namespace Application_v2
             Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop + inputLinePadding);
             Console.Write("Ввод: ");
             var input = Console.ReadLine();
-            return String.IsNullOrEmpty(input) ? "" : input;
+            return string.IsNullOrEmpty(input) ? "" : input;
         }
         private void UpdateActionTitileWithInput(int menuItemIndex)
         {
