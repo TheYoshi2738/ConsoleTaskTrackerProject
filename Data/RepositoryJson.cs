@@ -69,7 +69,7 @@ namespace Data
             var createdAt = DateOnly.FromDateTime((DateTime)jObject["CreatedAt"]);
             DateOnly? dueDate = DateOnly.TryParse((string)jObject["DueDate"], out DateOnly result) ? result : null;
                 
-            var status = (Core.TaskStatus)(int)jObject["Status"];
+            var status = (Core.TaskStatus)(int)jObject["TaskStatus"];
 
             var task = new Task(id, name, createdAt, dueDate, status);
 
