@@ -8,43 +8,75 @@ namespace Core
         public string Name { get; }
         public DateOnly CreatedAt { get; }
         public DateOnly? DueDate { get; private set; }
-        public Status TaskStatus { get; private set; }
-        public bool IsActive { get => !(TaskStatus == Status.Trashed || TaskStatus == Status.Done); }
+        public TaskStatus Status { get; private set; }
+        public bool IsActive { get => !(Status == TaskStatus.Trashed || Status == TaskStatus.Done); }
         public Task() : this(null) 
         {
-            Name  = "Задача " + Id.Substring(0, 5);
         }
-        public Task(string taskName)
+        public Task(string? taskName)
         {
             Id = Guid.NewGuid().ToString();
-            Name = taskName;
+            Name = taskName != null ? taskName.Trim() : "Задача " + Id.Substring(0, 5);
             CreatedAt = DateOnly.FromDateTime(DateTime.Now);
-            TaskStatus = Status.Backlog;
+            Status = TaskStatus.Backlog;
         }
-        public Task(string id, string name, DateOnly createdAt, DateOnly? dueDate, Status status)
+        public Task(string? taskName, string? dueDate) : this(taskName)
+        {
+            if (DateTime.TryParse(dueDate, out var date))
+            {
+                DueDate = DateOnly.FromDateTime(date);
+            }
+        }
+        public Task(string id, string name, DateOnly createdAt, DateOnly? dueDate, TaskStatus status)
         {
             Id = id;
             Name = name;
             CreatedAt = createdAt;
             DueDate = dueDate;
-            TaskStatus = status;
+            Status = status;
         }
-        public void ChangeStatus(Status status)
+        public IReadOnlyList<TaskStatus>? GetAvailableToChangeStatuses()//А точно ли именно у Task должен быть такой метод?
+        {
+            if (!IsActive)
+                return null;
+
+            var statuses = new List<TaskStatus>();
+
+            for (var i = 0; i < Status.GetPossibleStatusesCount(); i++)
+            {
+                if (Status == (TaskStatus)i)
+                {
+                    continue;
+                }
+                if (Status == TaskStatus.Backlog && (TaskStatus)i == TaskStatus.Done)
+                {
+                    continue;
+                }
+                statuses.Add((TaskStatus)i);
+            }
+            return statuses;
+        }
+        public void ChangeStatus(TaskStatus status)
         {
             if (!IsActive)
             {
                 throw new InvalidOperationException("Невозможно изменить статус у неактивной задачи");
             }
 
-            if (TaskStatus == Status.Backlog && status == Status.Done)
+            if (Status == TaskStatus.Backlog && status == TaskStatus.Done)
             {
                 throw new InvalidOperationException("Задачу нельзя перевести в Done из Backlog");
             }
-            TaskStatus = status;
+            Status = status;
         }
         public void ChangeDueDate(DateOnly dueDate)
         {
             DueDate = dueDate;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name}, Статус: {Status}, Дедлайн: {DueDate}";
         }
     }
 }

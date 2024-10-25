@@ -11,28 +11,51 @@ public class Program
 {
     public static void Main()
     {
-        //fake comment
-        //Console.CursorVisible = false;
-        //Console.WriteLine("Консольный таск-трекер");
-        //var menu = new MainMenuScreen("Главное меню",
-        //[
-        //    "Показать все задачи",
-        //    "Создать задачу",
-        //    "Выйти"
-        //]);
-        //menu.Print();
-
-        //menu.NextScreen(MenuManager.ChooseItem(menu.MenuItems));
-
         //попытка держать все такси в одном месте и искать путь до ДБ динамично
         var path = Assembly.GetExecutingAssembly().Location;
         var regex = new Regex(".*ConsoleTaskTrackerProject\\b");
         path = Convert.ToString(regex.Match(path));
-        var jsonRepository = new RepositoryJson(path + "\\TaskRepository\\jsonRepository.json");
+        var jsonRepository = new RepositoryJson(path + "\\jsonRepository.json");
 
-        StartChat(jsonRepository);
+        //StartChat(jsonRepository);
+        ConfigureApplication(jsonRepository);
     }
 
+    public static void ConfigureApplication(ITaskRepository taskRepository)
+    {
+        var allTasks = taskRepository.GetAllTasks();
+
+        var menuScreen = new MainMenuScreen("Главное меню",
+        [
+            "Показать все задачи",
+            "Создать задачу",
+            "Выйти"
+        ],
+        [
+            new AllTasksScreen("Все задачи", allTasks)
+        ]);
+        ManageApplication(menuScreen);
+    }
+
+    public static void ManageApplication(MainMenuScreen mainMenuScreen)
+    {
+        Console.CursorVisible = false;
+        Console.Title = ("Таск-трекер");
+
+
+        IAppScreen screen = mainMenuScreen;
+        //Здесь основная идея, что сама работа приложения - это
+        //переключения между экранами в бесконечном цикле +
+        //выполнение какого-то функционала: создание, изменение и пр.(еще не реализовано)
+        while (true)
+        {
+            screen.Print();
+            screen = screen.NextScreen(MenuManager.ChooseItem(screen.MenuItems));
+        }
+    }
+
+    //Этот метод может понадоибиться, чтобы 
+    //создать таски через приложение, пока не доделаю функционал в UI 
     public static void StartChat(ITaskRepository tasksRepository)
     {
         while (true)
