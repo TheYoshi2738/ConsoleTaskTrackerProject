@@ -1,9 +1,6 @@
-﻿
-using Core;
-using Data;
+﻿using Data;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System;
 
 namespace Application_v2
 {

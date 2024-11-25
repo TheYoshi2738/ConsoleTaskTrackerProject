@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application_v2
+﻿namespace Application_v2
 {
     public class ScreenPrinter
     {
@@ -21,22 +13,27 @@ namespace Application_v2
         readonly string _lastMenuItemTopPadding = "\n";
         readonly string _menuItemsCursor = "> ";
         public string? ScreenTitle { get; }
-        public List<string>? ScreenBody { get; }
-        public List<string?> MenuItemsTitles { get; }
+        public IReadOnlyList<string>? ScreenBody { get; }
+        public IReadOnlyList<string?> MenuItemsTitles { get; }
         public ScreenPrinter(IScreen screen)
         {
             ScreenTitle = screen.Title;
-            ScreenBody = screen.ScreenBodyLines;
 
-            MenuItemsTitles = new List<string?>();
+            if (screen is IBodyInfoScreen)
+            {
+                ScreenBody = ((IBodyInfoScreen)screen).ScreenBodyLines;
+            }
+
+            var menuItemsTitles = new List<string?>();
             foreach (var item in screen.Actions)
             {
-                MenuItemsTitles.Add(item.Title);
+                menuItemsTitles.Add(item.Title);
             }
+            MenuItemsTitles = menuItemsTitles;
         }
-        public void PrintAppTitle() => Console.Write(_appTitleLeftPadding + _appTitle);
-        public void PrintScreenTitle() => Console.Write(_screenTtileTopPadding + _screenTtileLeftPadding + ScreenTitle);
-        public void PrintScreenBody()
+        private void PrintAppTitle() => Console.Write(_appTitleLeftPadding + _appTitle);
+        private void PrintScreenTitle() => Console.Write(_screenTtileTopPadding + _screenTtileLeftPadding + ScreenTitle);
+        private void PrintScreenBody()
         {
             if (ScreenBody == null)
                 return;
@@ -47,7 +44,7 @@ namespace Application_v2
                 Console.WriteLine(_screenBodyLeftPadding + line);
             }
         }
-        public void PrintScreenMenuItems(int currentMenuItem)
+        private void PrintScreenMenuItems(int currentMenuItem)
         {
             Console.Write(_menuItemsTopPadding);
             for (var i = 0; i < MenuItemsTitles.Count; i++)
@@ -66,6 +63,13 @@ namespace Application_v2
                 }
             }
         }
-
+        public void UpdateScreen(int currentMenuItem)
+        {
+            Console.Clear();
+            PrintAppTitle();
+            PrintScreenTitle();
+            PrintScreenBody();
+            PrintScreenMenuItems(currentMenuItem);
+        }
     }
 }

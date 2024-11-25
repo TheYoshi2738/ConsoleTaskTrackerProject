@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Application_v2
+﻿namespace Application_v2
 {
     public class MenuActions
     {

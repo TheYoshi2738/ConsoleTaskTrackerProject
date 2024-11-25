@@ -6,10 +6,9 @@ using System.Text;
 
 namespace Application_v2
 {
-    public class AllTasksScreen : IScreen
+    public class AllTasksScreen : IDynamicScreen
     {
         public string Title { get; } = "Все задачи";
-        public List<string>? ScreenBodyLines { get; }
         public IReadOnlyList<MenuActions> Actions { get; private set; }
         public AppContext AppContext { get; }
 
@@ -35,7 +34,6 @@ namespace Application_v2
 
             return actions;
         }
-
         public void UpdateScreenInfo()
         {
             Actions = CreateMenuActions();

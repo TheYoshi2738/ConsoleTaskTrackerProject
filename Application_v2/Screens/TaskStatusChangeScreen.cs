@@ -1,15 +1,10 @@
 ﻿using Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Application_v2
 {
     public class TaskStatusChangeScreen : IScreen
     {
         public string? Title { get; }
-        public List<string>? ScreenBodyLines { get; }
         public IReadOnlyList<MenuActions> Actions { get; }
         public AppContext AppContext { get; }
 
@@ -27,25 +22,19 @@ namespace Application_v2
                     actions.Add(new MenuActions(item.GetStatusNameInRussian(), () =>
                     {
                         task.ChangeStatus(item);
-                        return AppContext.PopAndUpdatePreviousScreen();
+                        return AppContext.PopPreviousScreen();
                     }));
                 }
 
                 Title = $"Выбери статус для задачи \"{task.Name}\"";
-
             }
             else
             {
                 Title = $"Невозможно сменить статус у задачи \"{task.Name}\"";
             }
-            actions.Add(new MenuActions("Вернуться к задаче", () => AppContext.PopAndUpdatePreviousScreen()));
+            actions.Add(new MenuActions("Вернуться к задаче", () => AppContext.PopPreviousScreen()));
 
             Actions = actions;
-        }
-
-        public void UpdateScreenInfo()
-        {
-            throw new NotImplementedException();
         }
     }
 }

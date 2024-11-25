@@ -1,44 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net;
-using System.Text;
-using Core;
+﻿using Core;
 
 namespace Application_v2
 {
     internal class CreationTaskScreen : IScreen
     {
         public string? Title { get; } = "Создание задачи";
-        public List<string>? ScreenBodyLines { get; }
         public IReadOnlyList<MenuActions> Actions { get; }
         public AppContext AppContext { get; }
-        private List<(string, string?)> actionTitlesWithInputs { get; set; }
+        private List<TitleInput> _actionTitlesWithInputs { get; set; }
 
         public CreationTaskScreen(AppContext context)
         {
             AppContext = context;
             var actions = new List<MenuActions>();
-            actionTitlesWithInputs = new List<(string, string?)>()
+            _actionTitlesWithInputs = new List<TitleInput>()
             {
-                ("Название: ", null),
-                ("Дедлайн: ", null)
+                new TitleInput("Название: "),
+                new TitleInput("Дедлайн: ")
             };
 
-            actions.Add(new MenuActions(actionTitlesWithInputs[0].Item1, () =>
+            actions.Add(new MenuActions(_actionTitlesWithInputs[0].Title, () =>
             {
                 UpdateActionTitileWithInput(0);
                 return this;
             }));
-            actions.Add(new MenuActions(actionTitlesWithInputs[1].Item1, () =>
+            actions.Add(new MenuActions(_actionTitlesWithInputs[1].Title, () =>
             {
                 UpdateActionTitileWithInput(1);
                 return this;
             }));
             actions.Add(new MenuActions("Создать задачу", () =>
             {
-                AppContext.AllTasks.Add(new Task(actionTitlesWithInputs[0].Item2, actionTitlesWithInputs[1].Item2));
+                AppContext.AllTasks.Add(new Task(_actionTitlesWithInputs[0].Input, _actionTitlesWithInputs[1].Input));
                 return AppContext.PopPreviousScreen();
             }));
             actions.Add(new MenuActions("Вернуться в меню", () => AppContext.PopPreviousScreen()));
@@ -56,14 +49,15 @@ namespace Application_v2
         private void UpdateActionTitileWithInput(int menuItemIndex)
         {
             var input = GetInputFromScreen();
-            var currentItem = actionTitlesWithInputs[menuItemIndex];
-            currentItem.Item2 = input;
-            actionTitlesWithInputs[menuItemIndex] = currentItem;
-            Actions![menuItemIndex].Title = currentItem.Item1 + currentItem.Item2;
+            var currentItem = _actionTitlesWithInputs[menuItemIndex];
+            currentItem.Input = input;
+            _actionTitlesWithInputs[menuItemIndex] = currentItem;
+            Actions[menuItemIndex].Title = currentItem.Title + currentItem.Input;
         }
-        public void UpdateScreenInfo()
+        private class TitleInput(string title, string? input = null)
         {
-            throw new NotImplementedException();
+            public string Title { get; set; } = title;
+            public string? Input { get; set; } = input;
         }
     }
 }

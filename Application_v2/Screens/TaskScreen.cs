@@ -1,15 +1,12 @@
 ﻿using Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Application_v2
 {
-    public class TaskScreen : IScreen
+    public class TaskScreen : IDynamicScreen, IBodyInfoScreen
     {
         public string? Title { get; }
-        public List<string>? ScreenBodyLines { get; private set; }
+        public IReadOnlyList<string> ScreenBodyLines { get; private set; }
         public IReadOnlyList<MenuActions> Actions { get; }
         public AppContext AppContext { get; }
         public Task Task { get; }
@@ -20,7 +17,7 @@ namespace Application_v2
             Task = task;
             AppContext = context;
 
-            CreateBodyLines();
+            ScreenBodyLines = CreateBodyLines();
 
             var actions = new List<MenuActions>();
 
@@ -30,23 +27,23 @@ namespace Application_v2
                 return new TaskStatusChangeScreen(AppContext, task);
             }));
             actions.Add(new MenuActions("Изменить дедлайн", () => throw new NotImplementedException()));
-            actions.Add(new MenuActions("Вернуться ко всем задачам", () => AppContext.PopAndUpdatePreviousScreen()));
+            actions.Add(new MenuActions("Вернуться ко всем задачам", () => AppContext.PopPreviousScreen()));
 
             Actions = actions;
         }
 
-        private void CreateBodyLines()
+        private IReadOnlyList<string> CreateBodyLines()
         {
-            ScreenBodyLines =
+            return
             [
                 "Статус: " + Task.Status.GetStatusNameInRussian(),
-                "Дедлайн: " + (Task.DueDate != null ? Task.DueDate!.Value.ToShortDateString() : "Нет"),
+                "Дедлайн: " + (Task.DueDate != null ? Task.DueDate.Value.ToShortDateString() : "Нет"),
             ];
         }
 
         public void UpdateScreenInfo()
         {
-            CreateBodyLines();
+            ScreenBodyLines = CreateBodyLines();
         }
     }
 }

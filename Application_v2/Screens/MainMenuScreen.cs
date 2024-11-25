@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Application_v2
+﻿namespace Application_v2
 {
     public class MainMenuScreen : IScreen
     {
         public string Title { get; } = "Главное меню";
-        public List<string>? ScreenBodyLines { get; }
         public IReadOnlyList<MenuActions> Actions { get; }
-
         public AppContext AppContext { get; }
 
         public MainMenuScreen(AppContext context)
@@ -20,7 +13,7 @@ namespace Application_v2
 
             actions.Add(new MenuActions("Показать все задачи", () =>
             {
-                AppContext.PushPreviousScreen(this); //выглядит плохо, что при действии вернуть задачу делаю что-то еще
+                AppContext.PushPreviousScreen(this);
                 return new AllTasksScreen(context);
             }));
             actions.Add(new MenuActions("Создать задачу", () =>
@@ -35,11 +28,6 @@ namespace Application_v2
             }));
 
             Actions = actions;
-        }
-
-        public void UpdateScreenInfo()
-        {
-            throw new NotImplementedException();
         }
     }
 }

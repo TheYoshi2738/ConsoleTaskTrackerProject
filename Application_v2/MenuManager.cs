@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Application_v2
+﻿namespace Application_v2
 {
     public class MenuManager
     {
         public List<MenuActions> MenuItems;
-        private ScreenPrinter printer;
+        private readonly ScreenPrinter printer;
 
         public MenuManager(IScreen screen, ScreenPrinter printer)
         {
@@ -25,7 +20,7 @@ namespace Application_v2
 
             while (true)
             {
-                UpdateScreen();
+                printer.UpdateScreen(currentMenuItem);
 
                 var key = Console.ReadKey(false).Key;
 
@@ -43,17 +38,6 @@ namespace Application_v2
                         return MenuItems[currentMenuItem].Action();
                 }
             }
-            
-            //тут хз насколько красиво делать локальную функцию
-            void UpdateScreen()
-            {
-                Console.Clear();
-                printer.PrintAppTitle();
-                printer.PrintScreenTitle();
-                printer.PrintScreenBody();
-                printer.PrintScreenMenuItems(currentMenuItem);
-            }
         }
-
     }
 }

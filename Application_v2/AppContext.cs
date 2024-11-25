@@ -1,8 +1,4 @@
-﻿using System;
-using Core;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Core;
 
 namespace Application_v2
 {
@@ -23,12 +19,12 @@ namespace Application_v2
         }
         public IScreen PopPreviousScreen()
         {
-            return _previousScreen.Pop();
-        }
-        public IScreen PopAndUpdatePreviousScreen()
-        {
             var screen = _previousScreen.Pop();
-            screen.UpdateScreenInfo();
+            if (screen is IDynamicScreen)
+            {
+                ((IDynamicScreen)screen).UpdateScreenInfo(); //каст должен быть безопасен. Вопрос насколько такой способ приемлем
+            }
+
             return screen;
         }
     }
