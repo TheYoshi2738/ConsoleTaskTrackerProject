@@ -2,7 +2,7 @@
 {
     public class MenuManager
     {
-        public List<MenuActions> MenuItems;
+        public List<MenuAction> MenuItems;
         private readonly ScreenPrinter printer;
 
         public MenuManager(IScreen screen, ScreenPrinter printer)

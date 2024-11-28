@@ -9,7 +9,7 @@ namespace Application_v2
     public class AllTasksScreen : IDynamicScreen
     {
         public string Title { get; } = "Все задачи";
-        public IReadOnlyList<MenuActions> Actions { get; private set; }
+        public IReadOnlyList<MenuAction> Actions { get; private set; }
         public AppContext AppContext { get; }
 
         public AllTasksScreen(AppContext context)
@@ -17,20 +17,20 @@ namespace Application_v2
             AppContext = context;
             Actions = CreateMenuActions();
         }
-        private IReadOnlyList<MenuActions> CreateMenuActions()
+        private IReadOnlyList<MenuAction> CreateMenuActions()
         {
-            var actions = new List<MenuActions>();
+            var actions = new List<MenuAction>();
 
             foreach (var task in AppContext.AllTasks)
             {
-                actions.Add(new MenuActions(task.Name, () =>
+                actions.Add(new MenuAction(task.Name, () =>
                 {
                     AppContext.PushPreviousScreen(this);
                     return new TaskScreen(AppContext, task);
                 })
                 );
             }
-            actions.Add(new MenuActions("Вернуться в главное меню", () => AppContext.PopPreviousScreen()));
+            actions.Add(new MenuAction("Вернуться в главное меню", () => AppContext.PopPreviousScreen()));
 
             return actions;
         }

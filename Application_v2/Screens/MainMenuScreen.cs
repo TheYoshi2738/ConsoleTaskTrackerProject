@@ -3,25 +3,25 @@
     public class MainMenuScreen : IScreen
     {
         public string Title { get; } = "Главное меню";
-        public IReadOnlyList<MenuActions> Actions { get; }
+        public IReadOnlyList<MenuAction> Actions { get; }
         public AppContext AppContext { get; }
 
         public MainMenuScreen(AppContext context)
         {
             AppContext = context;
-            var actions = new List<MenuActions>();
+            var actions = new List<MenuAction>();
 
-            actions.Add(new MenuActions("Показать все задачи", () =>
+            actions.Add(new MenuAction("Показать все задачи", () =>
             {
                 AppContext.PushPreviousScreen(this);
                 return new AllTasksScreen(context);
             }));
-            actions.Add(new MenuActions("Создать задачу", () =>
+            actions.Add(new MenuAction("Создать задачу", () =>
             {
                 context.PushPreviousScreen(this);
                 return new CreationTaskScreen(context);
             }));
-            actions.Add(new MenuActions("Выйти", () =>
+            actions.Add(new MenuAction("Выйти", () =>
             {
                 Environment.Exit(0);
                 return null;

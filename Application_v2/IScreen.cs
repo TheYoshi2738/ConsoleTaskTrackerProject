@@ -3,7 +3,7 @@
     public interface IScreen
     {
         string? Title { get; }
-        IReadOnlyList<MenuActions> Actions { get; }
+        IReadOnlyList<MenuAction> Actions { get; }
         AppContext AppContext { get; }
     }
     public interface IDynamicScreen : IScreen
@@ -13,5 +13,9 @@
     public interface IBodyInfoScreen
     {
         IReadOnlyList<string> ScreenBodyLines { get; }
+    }
+    public interface IScreenInput : IScreen
+    {
+        new IReadOnlyList<MenuActionInput> Actions { get; }
     }
 }

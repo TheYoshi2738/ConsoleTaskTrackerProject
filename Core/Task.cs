@@ -22,9 +22,9 @@ namespace Core
         }
         public Task(string? taskName, string? dueDate) : this(taskName)
         {
-            if (DateTime.TryParse(dueDate, out var date))
+            if (DateOnly.TryParse(dueDate, out var date))
             {
-                DueDate = DateOnly.FromDateTime(date);
+                DueDate = date;
             }
         }
         public Task(string id, string name, DateOnly createdAt, DateOnly? dueDate, TaskStatus status)
@@ -72,6 +72,11 @@ namespace Core
         public void ChangeDueDate(DateOnly dueDate)
         {
             DueDate = dueDate;
+        }
+        public void ChangeDueDate(string dueDate)
+        {
+            if (DateOnly.TryParse(dueDate, out var date))
+                ChangeDueDate(date);
         }
 
         public override string ToString()

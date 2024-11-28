@@ -7,7 +7,7 @@ namespace Application_v2
     {
         public string? Title { get; }
         public IReadOnlyList<string> ScreenBodyLines { get; private set; }
-        public IReadOnlyList<MenuActions> Actions { get; }
+        public IReadOnlyList<MenuAction> Actions { get; }
         public AppContext AppContext { get; }
         public Task Task { get; }
 
@@ -19,15 +19,19 @@ namespace Application_v2
 
             ScreenBodyLines = CreateBodyLines();
 
-            var actions = new List<MenuActions>();
+            var actions = new List<MenuAction>();
 
-            actions.Add(new MenuActions("Сменить статус", () =>
+            actions.Add(new MenuAction("Сменить статус", () =>
             {
                 AppContext.PushPreviousScreen(this);
                 return new TaskStatusChangeScreen(AppContext, task);
             }));
-            actions.Add(new MenuActions("Изменить дедлайн", () => throw new NotImplementedException()));
-            actions.Add(new MenuActions("Вернуться ко всем задачам", () => AppContext.PopPreviousScreen()));
+            actions.Add(new MenuAction("Изменить дедлайн", () =>
+            {
+                AppContext.PushPreviousScreen(this);
+                return new TaskDeadlineChangeScreen(AppContext, task);
+            }));
+            actions.Add(new MenuAction("Вернуться ко всем задачам", () => AppContext.PopPreviousScreen()));
 
             Actions = actions;
         }
