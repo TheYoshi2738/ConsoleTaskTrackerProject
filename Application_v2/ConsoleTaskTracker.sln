@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "..\Core\Core.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "..\Tests\Tests.csproj", "{EC25D902-6DBB-4B9F-B8AB-85374BE57A2E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application_v2", "..\Application_v2\Application_v2.csproj", "{7AEDED13-C7E3-40E3-9DE0-80DA112D9C4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application_v2", "Application_v2.csproj", "{7AEDED13-C7E3-40E3-9DE0-80DA112D9C4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

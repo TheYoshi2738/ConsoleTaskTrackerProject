@@ -11,7 +11,8 @@ namespace Core
         public DateOnly? DueDate { get; private set; }
         public TaskStatus Status { get; private set; }
         public bool IsActive { get => !(Status == TaskStatus.Trashed || Status == TaskStatus.Done); }
-        private List<TaskComment> _comments { get; set; } = new List<TaskComment>();
+        public IReadOnlyList<TaskComment> Comments { get => _comments; }
+        private List<TaskComment> _comments {  get; } = new List<TaskComment>();
         public Task() : this(null)
         {
         }
@@ -29,13 +30,14 @@ namespace Core
                 DueDate = date;
             }
         }
-        public Task(string id, string name, DateOnly createdAt, DateOnly? dueDate, TaskStatus status)
+        public Task(string id, string name, DateOnly createdAt, DateOnly? dueDate, TaskStatus status, List<TaskComment> comments)
         {
             Id = id;
             Name = name;
             CreatedAt = createdAt;
             DueDate = dueDate;
             Status = status;
+            _comments = comments;
         }
         public IReadOnlyList<TaskStatus>? GetAvailableToChangeStatuses()
         {
@@ -94,15 +96,5 @@ namespace Core
             _comments.Add(new TaskComment(comment));
         }
 
-    }
-    public class TaskComment
-    {
-        public DateTime CreatedAt { get; set; }
-        public string Text { get; set; }
-        public TaskComment(string text)
-        {
-            Text = text;
-            CreatedAt = DateTime.Now;
-        }
     }
 }

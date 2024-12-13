@@ -28,6 +28,7 @@ namespace Application_v2
             actions.Add(new MenuActionInput("Обновить дедлайн и вернуться к задаче", () =>
             {
                 task.ChangeDueDate(Actions[0].Input);
+                AppContext.UpdateTaskInRepository(task.Id, task);
                 return AppContext.PopPreviousScreen();
             }));
 

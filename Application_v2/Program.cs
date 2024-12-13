@@ -1,6 +1,5 @@
 ﻿using Data;
-using System.Reflection;
-using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application_v2
 {
@@ -8,26 +7,25 @@ namespace Application_v2
     {
         static void Main(string[] args)
         {
-            #region
-            var path = Assembly.GetExecutingAssembly().Location;
-            var regex = new Regex(".*ConsoleTaskTrackerProject\\b");
-            path = Convert.ToString(regex.Match(path));
-            var jsonRepository = new RepositoryJson(path + "\\jsonRepository.json");
-            #endregion
+            //var dbContextOptions = new DbContextOptionsBuilder<TaskTrackerDbContext>();
 
+            var dbContext = new TaskTrackerDbContext();
+            var repository = new TasksRepository(dbContext);
 
-            AppContext applicationContext = new AppContext(jsonRepository);
+            AppContext applicationContext = new AppContext(repository);
+
             Console.CursorVisible = false;
-
             IScreen currentScreen = new MainMenuScreen(applicationContext);
 
             while (true)
             {
+                if (currentScreen == null) break;
                 var printer = new ScreenPrinter(currentScreen);
                 var manager = new MenuManager(currentScreen, printer);
                 var nextScreen = manager.ManageMenu();
                 currentScreen = nextScreen;
             }
+            Console.WriteLine("Вышли из приложения");
         }
     }
 

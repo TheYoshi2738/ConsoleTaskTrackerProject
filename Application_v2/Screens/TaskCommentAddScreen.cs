@@ -25,6 +25,7 @@ namespace Application_v2
             actions.Add(new MenuActionInput("Добавить комменатрий и вернуться к задаче", () =>
             {
                 task.AddComment(Actions[0].Input);
+                AppContext.UpdateTaskInRepository(task.Id, task);
                 return AppContext.PopPreviousScreen();
             }));
 

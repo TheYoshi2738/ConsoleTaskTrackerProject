@@ -27,7 +27,7 @@ namespace Application_v2
             }));
             actions.Add(new MenuActionInput("Создать задачу", () =>
             {
-                AppContext.AllTasks.Add(new Task(Actions[0].Input, Actions[1].Input));
+                AppContext.AddTaskToRepository(new Task(Actions[0].Input, Actions[1].Input));
                 return AppContext.PopPreviousScreen();
             }));
             actions.Add(new MenuActionInput("Вернуться в меню", () => AppContext.PopPreviousScreen()));
