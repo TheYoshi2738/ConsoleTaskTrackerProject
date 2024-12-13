@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Reflection.Emit;
 
 namespace Core
 {
@@ -10,7 +11,9 @@ namespace Core
         public DateOnly? DueDate { get; private set; }
         public TaskStatus Status { get; private set; }
         public bool IsActive { get => !(Status == TaskStatus.Trashed || Status == TaskStatus.Done); }
-        public Task() : this(null) 
+        public IReadOnlyList<TaskComment> Comments { get => _comments; }
+        private List<TaskComment> _comments {  get; } = new List<TaskComment>();
+        public Task() : this(null)
         {
         }
         public Task(string? taskName)
@@ -27,15 +30,16 @@ namespace Core
                 DueDate = date;
             }
         }
-        public Task(string id, string name, DateOnly createdAt, DateOnly? dueDate, TaskStatus status)
+        public Task(string id, string name, DateOnly createdAt, DateOnly? dueDate, TaskStatus status, List<TaskComment> comments)
         {
             Id = id;
             Name = name;
             CreatedAt = createdAt;
             DueDate = dueDate;
             Status = status;
+            _comments = comments;
         }
-        public IReadOnlyList<TaskStatus>? GetAvailableToChangeStatuses()//А точно ли именно у Task должен быть такой метод?
+        public IReadOnlyList<TaskStatus>? GetAvailableToChangeStatuses()
         {
             if (!IsActive)
                 return null;
@@ -78,10 +82,19 @@ namespace Core
             if (DateOnly.TryParse(dueDate, out var date))
                 ChangeDueDate(date);
         }
-
-        public override string ToString()
+        public IEnumerable<string> GetCommentsForScreen()
         {
-            return $"{Name}, Статус: {Status}, Дедлайн: {DueDate}";
+            if (_comments.Count == 0) yield break;
+
+            foreach (var comment in _comments)
+            {
+                yield return $"{comment.CreatedAt} {comment.Text}";
+            }
         }
+        public void AddComment(string comment)
+        {
+            _comments.Add(new TaskComment(comment));
+        }
+
     }
 }

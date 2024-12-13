@@ -22,6 +22,7 @@ namespace Application_v2
                     actions.Add(new MenuAction(item.GetStatusNameInRussian(), () =>
                     {
                         task.ChangeStatus(item);
+                        AppContext.UpdateTaskInRepository(task.Id, task);
                         return AppContext.PopPreviousScreen();
                     }));
                 }

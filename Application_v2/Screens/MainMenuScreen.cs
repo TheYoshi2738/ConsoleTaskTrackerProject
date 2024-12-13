@@ -23,7 +23,7 @@
             }));
             actions.Add(new MenuAction("Выйти", () =>
             {
-                Environment.Exit(0);
+                //Environment.Exit(0);
                 return null;
             }));
 

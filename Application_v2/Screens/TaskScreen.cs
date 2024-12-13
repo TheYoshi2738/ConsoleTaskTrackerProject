@@ -26,6 +26,11 @@ namespace Application_v2
                 AppContext.PushPreviousScreen(this);
                 return new TaskStatusChangeScreen(AppContext, task);
             }));
+            actions.Add(new MenuAction("Добавить комментарий", () =>
+            {
+                AppContext.PushPreviousScreen(this);
+                return new TaskCommentAddScreen(AppContext, task);
+            }));
             actions.Add(new MenuAction("Изменить дедлайн", () =>
             {
                 AppContext.PushPreviousScreen(this);
@@ -38,11 +43,19 @@ namespace Application_v2
 
         private IReadOnlyList<string> CreateBodyLines()
         {
-            return
-            [
-                "Статус: " + Task.Status.GetStatusNameInRussian(),
-                "Дедлайн: " + (Task.DueDate != null ? Task.DueDate.Value.ToShortDateString() : "Нет"),
-            ];
+            var bodyLines = new List<string>();
+            bodyLines.Add("Статус: " + Task.Status.GetStatusNameInRussian());
+            bodyLines.Add("Дедлайн: " + (Task.DueDate != null ? Task.DueDate.Value.ToShortDateString() : "Нет"));
+
+            var comments = Task.GetCommentsForScreen();
+            if (comments.Any())
+            {
+                bodyLines.Add("\nКомментарии\n");
+                foreach (var comment in comments)
+                    bodyLines.Add(comment);
+            }
+
+            return bodyLines;
         }
 
         public void UpdateScreenInfo()

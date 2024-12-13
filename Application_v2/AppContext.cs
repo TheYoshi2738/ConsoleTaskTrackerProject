@@ -4,14 +4,19 @@ namespace Application_v2
 {
     public class AppContext
     {
-        public List<Task> AllTasks { get; private set; }
+        public IReadOnlyList<Task> AllTasks
+        {
+            get
+            {
+                return _taskRepository.GetAllTasks();
+            }
+        }
         public readonly Stack<IScreen> _previousScreen = new Stack<IScreen>();
-        public ITaskRepository TaskRepository { get; }
+        private ITaskRepository _taskRepository { get; }
 
         public AppContext(ITaskRepository repository)
         {
-            AllTasks = repository.GetAllTasks().ToList();
-            TaskRepository = repository;
+            _taskRepository = repository;
         }
         public void PushPreviousScreen(IScreen previousScreen)
         {
@@ -26,6 +31,18 @@ namespace Application_v2
             }
 
             return screen;
+        }
+        public void AddTaskToRepository(Task task)
+        {
+            _taskRepository.CreateTask(task);
+        }
+        public void UpdateTaskInRepository(string taskId, Task actualTask)
+        {
+            _taskRepository.UpdateTask(taskId, actualTask);
+        }
+        public void DeleteTaskInRepository(Task taskId)
+        {
+            _taskRepository.DeleteTask(taskId);
         }
     }
 }

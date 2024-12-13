@@ -25,9 +25,10 @@ namespace Application_v2
                 Actions[0].UpdateTitileWithInput();
                 return this;
             }, task.DueDate.ToString()));
-            actions.Add(new MenuActionInput("Вернуться к задаче", () =>
+            actions.Add(new MenuActionInput("Обновить дедлайн и вернуться к задаче", () =>
             {
                 task.ChangeDueDate(Actions[0].Input);
+                AppContext.UpdateTaskInRepository(task.Id, task);
                 return AppContext.PopPreviousScreen();
             }));
 

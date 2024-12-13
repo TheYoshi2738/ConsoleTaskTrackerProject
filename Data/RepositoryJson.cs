@@ -17,15 +17,10 @@ namespace Data
                 new TaskJsonConverter()
             } 
         };
-        
-        public RepositoryJson(string pathToRepo)
+       
+        public RepositoryJson(FileInfo repositoryFile)
         {
-            var repoFileInfo = new FileInfo(pathToRepo);
-            if (!repoFileInfo.Exists)
-            {
-                using (repoFileInfo.Create());
-            }
-            TaskRepoFile = repoFileInfo;
+            TaskRepoFile = repositoryFile;
         }
 
         public IReadOnlyList<Task> GetAllTasks()
@@ -51,6 +46,16 @@ namespace Data
         {
             throw new NotImplementedException();
         }
+
+        public void UpdateTask(string taskId, Task actualTask)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteTask(Task task)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class TaskJsonConverter : JsonConverter
@@ -71,7 +76,7 @@ namespace Data
                 
             var status = (Core.TaskStatus)(int)jObject["TaskStatus"];
 
-            var task = new Task(id, name, createdAt, dueDate, status);
+            var task = new Task(id, name, createdAt, dueDate, status, null);
 
             return task;
         }
