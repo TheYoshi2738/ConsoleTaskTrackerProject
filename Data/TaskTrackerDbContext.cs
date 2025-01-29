@@ -7,11 +7,10 @@ namespace Data
 {
     public class TaskTrackerDbContext : DbContext
     {
-        public TaskTrackerDbContext() : base()
+        public TaskTrackerDbContext(DbContextOptionsBuilder<TaskTrackerDbContext> builder) : base(builder.Options)
         {
             Database.EnsureCreated();
         }
-        //Непонятно что там с nullable для этих полей
         public DbSet<TaskEntity> Tasks { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -20,11 +19,6 @@ namespace Data
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
 
             base.OnModelCreating(modelBuilder);
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseSqlServer("Server = (localdb)\\mssqllocaldb; Database = TaskTracker; Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
         }
     }
 }

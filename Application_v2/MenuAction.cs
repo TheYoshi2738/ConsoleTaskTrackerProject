@@ -5,9 +5,9 @@ namespace Application_v2
     public class MenuAction
     {
         public string? Title { get; set; }
-        public Func<IScreen> Action { get; set; }
+        public Func<IScreen?> Action { get; set; }
 
-        public MenuAction(string? title, Func<IScreen> action)
+        public MenuAction(string? title, Func<IScreen?> action)
         {
             Title = title;
             Action = action;
@@ -17,7 +17,7 @@ namespace Application_v2
     {
         private readonly string? TitleName;
         public string? Input { get; private set; }
-        public MenuActionInput(string? title, Func<IScreen> action, string? input = null)
+        public MenuActionInput(string? title, Func<IScreen?> action, string? input = null)
             : base(title, action)
         {
             TitleName = title;

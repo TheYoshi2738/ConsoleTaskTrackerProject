@@ -2,10 +2,10 @@
 {
     public class CommentEntity
     {
-        public Guid Id { get; set; }
-        public string Text { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; }
-        public TaskEntity TaskEntity { get; set; }
-        public Guid TaskId { get; set; }
+        public Guid Id { get; init; }
+        public required string Text { get; init; } = string.Empty;
+        public DateTime CreatedAt { get; init; }
+        public required TaskEntity TaskEntity { get; init; }
+        public Guid TaskId { get; init; }
     }
 }

@@ -11,7 +11,7 @@
             this.printer = printer;
         }
 
-        public IScreen ManageMenu()
+        public IScreen? ManageMenu()
         {
             var currentMenuItem = 0;
             var menuLength = MenuItems.Count;

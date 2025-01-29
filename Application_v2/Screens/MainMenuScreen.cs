@@ -21,11 +21,7 @@
                 context.PushPreviousScreen(this);
                 return new CreationTaskScreen(context);
             }));
-            actions.Add(new MenuAction("Выйти", () =>
-            {
-                //Environment.Exit(0);
-                return null;
-            }));
+            actions.Add(new MenuAction("Выйти", () => null));
 
             Actions = actions;
         }

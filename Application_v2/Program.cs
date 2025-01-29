@@ -1,5 +1,7 @@
-﻿using Data;
+﻿using System.IO;
+using Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Application_v2
 {
@@ -7,15 +9,20 @@ namespace Application_v2
     {
         static void Main(string[] args)
         {
-            //var dbContextOptions = new DbContextOptionsBuilder<TaskTrackerDbContext>();
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appconfig.json")
+                .Build();
 
-            var dbContext = new TaskTrackerDbContext();
+            var dbContext = new TaskTrackerDbContext(new DbContextOptionsBuilder<TaskTrackerDbContext>()
+                .UseNpgsql(config.GetConnectionString("postgres")));
+            
             var repository = new TasksRepository(dbContext);
 
             AppContext applicationContext = new AppContext(repository);
 
             Console.CursorVisible = false;
-            IScreen currentScreen = new MainMenuScreen(applicationContext);
+            IScreen? currentScreen = new MainMenuScreen(applicationContext);
 
             while (true)
             {

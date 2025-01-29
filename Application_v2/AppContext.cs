@@ -11,18 +11,18 @@ namespace Application_v2
                 return _taskRepository.GetAllTasks();
             }
         }
-        public readonly Stack<IScreen> _previousScreen = new Stack<IScreen>();
+        public readonly Stack<IScreen?> _previousScreen = new Stack<IScreen?>();
         private ITaskRepository _taskRepository { get; }
 
         public AppContext(ITaskRepository repository)
         {
             _taskRepository = repository;
         }
-        public void PushPreviousScreen(IScreen previousScreen)
+        public void PushPreviousScreen(IScreen? previousScreen)
         {
             _previousScreen.Push(previousScreen);
         }
-        public IScreen PopPreviousScreen()
+        public IScreen? PopPreviousScreen()
         {
             var screen = _previousScreen.Pop();
             if (screen is IDynamicScreen)

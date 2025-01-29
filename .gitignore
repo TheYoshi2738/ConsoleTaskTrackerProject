@@ -363,3 +363,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /ConsoleTaskTracker.sln
+
+.idea/
+Application_v2/.idea/

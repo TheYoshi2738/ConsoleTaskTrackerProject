@@ -42,12 +42,16 @@ namespace Data
             entity.Status = actualTask.Status;
             entity.DueDate = actualTask.DueDate;
 
+            //Ищу комменты, которых нет в базе
+            //и отдельно заношу каждый коммент
+            //в базу
+            
             var newComments = actualTask.Comments
-                .Where(c => !_context.Comments
-                    .Select(c => c.Id.ToString()).Contains(c.Id));
-                                                                    //Ищу комменты, которых нет в базе
-            foreach (var comment in newComments)                    //и отдельно заношу каждый коммент
-                AddComment(entity, comment);                        //в базу
+                .Where(commentCoreModel => !_context.Comments
+                    .Select(commentEntity => commentEntity.Id.ToString()).Contains(commentCoreModel.Id));
+            
+            foreach (var comment in newComments)                    
+                AddComment(entity, comment);                        
 
             _context.Tasks.Update(entity);
             _context.SaveChanges();
@@ -83,7 +87,7 @@ namespace Data
             {
                 Id = Guid.Parse(comment.Id),
                 Text = comment.Text,
-                CreatedAt = comment.CreatedAt,
+                CreatedAt = comment.CreatedAt.ToUniversalTime(),
                 TaskEntity = task,
                 TaskId = task.Id
             };
@@ -97,7 +101,7 @@ namespace Data
                 entity.CreatedAt,
                 entity.DueDate,
                 entity.Status,
-                entity.Comments.Select(c => EntityToComment(c)).ToList()
+                entity.Comments.Select(EntityToComment).ToList()
                 );
         }
 
@@ -105,7 +109,7 @@ namespace Data
         {
             return new TaskComment(
                 comment.Id.ToString(),
-                comment.CreatedAt,
+                comment.CreatedAt.ToLocalTime(),
                 comment.Text
                 );
         }
